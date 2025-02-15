@@ -1,0 +1,45 @@
+services:
+  chess_api:
+    build: ./
+    volumes:
+      - ./:/var/www
+    container_name: chess_api
+    ports:
+      - "8000:8000"       
+    environment:
+      - DB_HOST=mysql
+      - DB_DATABASE=${DB_DATABASE}
+      - DB_USERNAME=${DB_USERNAME}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - REDIS_HOST=redis
+    depends_on:
+      - mysql
+      - redis
+    networks:
+      - chess_network
+
+  mysql:
+    image: mysql:8
+    container_name: chess_mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - chess_network
+
+  redis:
+    image: redis:6
+    container_name: chess_redis
+    restart: always
+    networks:
+      - chess_network
+
+volumes:
+  mysql_data:
+
+networks:
+  chess_network:
