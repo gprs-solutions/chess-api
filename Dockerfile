@@ -4,13 +4,11 @@ FROM php:8-fpm-alpine
 RUN apk update && apk add --no-cache \
     build-base \
     curl \
-    git \
     zip \
     unzip \
     bash \
     oniguruma-dev \
-    libxml2-dev \
-    entr
+    libxml2-dev
 
 # Install PHP extensions required by Laravel
 RUN docker-php-ext-install pdo_mysql mbstring xml pcntl
