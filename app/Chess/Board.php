@@ -3,8 +3,9 @@
 namespace App\Chess;
 
 use App\Chess\Pieces\King;
+use App\Contracts\BoardContextContract;
 
-class Board
+class Board implements BoardContextContract
 {
     /**
      * Game's board.

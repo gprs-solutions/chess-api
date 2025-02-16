@@ -16,7 +16,7 @@ class BishopTest extends TestCase
      */
     public function testLegalMove(): void
     {
-        $game = new Game();
+       $game = app()->make(Game::class);
         $game->startGame();
 
         $oldPos = new stdClass();

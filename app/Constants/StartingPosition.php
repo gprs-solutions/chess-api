@@ -8,9 +8,6 @@ use App\Chess\Pieces\Rook;
 use App\Chess\Pieces\Queen;
 use App\Chess\Pieces\Pawn;
 use App\Chess\Pieces\King;
-use App\Contracts\GameContextContract;
-
-app()->bind(GameContextContract::class, Game::class);
 
 // Create an 8x8 board array.
 $board = [];

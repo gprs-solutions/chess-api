@@ -3,6 +3,7 @@ namespace App\Chess;
 
 use App\Contracts\GameContextContract;
 use App\Chess\Validators\CheckValidator;
+use App\Contracts\BoardContextContract;
 
 class Game implements GameContextContract
 {   
@@ -32,10 +33,10 @@ class Game implements GameContextContract
     /**
      * Constructor method.
      * 
-     * @param Board $board Chess board.
+     * @param BoardContextContract $board Chess board contract.
      */
-    public function __construct(){
-        $this->board = new Board();
+    public function __construct(BoardContextContract $board){
+        $this->board = $board;
         $this->moves = [];
     }
 
@@ -56,11 +57,11 @@ class Game implements GameContextContract
      */
     public function switchUser(): void{
         if($this->currentUser === 'Black'){
-            $this->currentUser === 'White';
+            $this->currentUser = 'White';
             return;
         }
 
-        $this->currentUser === 'Black';
+        $this->currentUser = 'Black';
     }
 
     /**

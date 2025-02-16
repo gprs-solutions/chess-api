@@ -15,7 +15,7 @@ class MovesTest extends TestCase
      */
     public function testMovesCreation(): void
     {
-        $game = new Game();
+        $game = app()->make(Game::class);
         $game->startGame();
 
         $oldPos = new stdClass();
