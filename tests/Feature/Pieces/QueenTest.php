@@ -18,6 +18,7 @@ class QueenTest extends TestCase
     {
         $game = new Game();
         $game->startGame();
+        $game->currentUser = 'Black';
 
         $oldPos = new stdClass();
         $oldPos->row = 0;

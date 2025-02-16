@@ -1,9 +1,10 @@
 <?php
 namespace App\Chess;
 
+use App\Contracts\GameContextContract;
 use App\Chess\Validators\CheckValidator;
 
-class Game
+class Game implements GameContextContract
 {   
     use CheckValidator;
 
@@ -35,6 +36,7 @@ class Game
      */
     public function __construct(){
         $this->board = new Board();
+        $this->moves = [];
     }
 
     /**
@@ -77,7 +79,7 @@ class Game
         if($this->isCheck($oldPosition, $newPosition)){
             return false;
         }
-
+        
         foreach($legalMoves as $move){
             if(!($move->row === $newPosition->row && $move->col === $newPosition->col)){
                 continue;
@@ -158,6 +160,16 @@ class Game
         $board->setBoard($simulatedBoard);
 
         return $this->isKingInCheck($board, $this->currentUser);
+    }
+
+    /**
+     * Returns the move history.
+     *
+     * @return array
+     */
+    public function getMoveHistory(): array
+    {
+        return $this->moves;
     }
 
     /**

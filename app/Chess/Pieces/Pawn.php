@@ -3,16 +3,29 @@ namespace App\Chess\Pieces;
 
 use App\Chess\Piece;
 use App\Chess\Board;
+use App\Contracts\GameContextContract;
+use App\Chess\Validators\EnPassantValidator;
 
 class Pawn extends Piece{
+    use EnPassantValidator;
+
+    /**
+     * Game context.
+     * 
+     * @var GameContextContract $gameContextContract
+     */
+    private GameContextContract $gameContextContract;
+
     /**
      * Constructor method.
      * 
+     * @param GameContextContract $gameContextContract The contract with the game context.
      * @param string $color Piece color.
      * @param int $row Piece's row.
      * @param int $col Piece's col.
      */
-    public function __construct(string $color, int $row, int $col){
+    public function __construct(GameContextContract $gameContextContract, string $color, int $row, int $col){
+        $this->gameContextContract = $gameContextContract;
         $this->code = 'P';
         $this->color = $color;
         $this->setPosition($row, $col);
@@ -78,7 +91,8 @@ class Pawn extends Piece{
                 if ($captureCol >= 0 && $captureCol < 8) {
                     // For a capture move, check if there's an opposing piece in the diagonal square.
                     $target = $board[$forwardRow][$captureCol];
-                    if ($target !== null && $target->getColor() !== $this->color) {
+                    $movesHistory = $this->gameContextContract->getMoveHistory();
+                    if (($target !== null && $target->color !== $this->color) || $this->canEnPassant($board,$movesHistory,$this)) {
                         $move = new \stdClass();
                         $move->row = $forwardRow;
                         $move->col = $captureCol;

@@ -1,20 +1,61 @@
 <?php
 namespace App\Chess\Constants;
 
+use App\Chess\Game;
 use App\Chess\Pieces\Bishop;
 use App\Chess\Pieces\Knight;
 use App\Chess\Pieces\Rook;
 use App\Chess\Pieces\Queen;
 use App\Chess\Pieces\Pawn;
 use App\Chess\Pieces\King;
+use App\Contracts\GameContextContract;
 
-return [
-    [new Rook('Black',0,0),new Knight('Black',0,1),new Bishop('Black',0,2),new Queen('Black',0,3),new King('Black',0,4),new Bishop('Black',0,5),new Knight('Black',0,6),new Rook('Black',0,7),],
-    [new Pawn('Black',1,0), new Pawn('Black',1,1), new Pawn('Black',1,2), new Pawn('Black',1,3), new Pawn('Black',1,4), new Pawn('Black',1,5), new Pawn('Black',1,6), new Pawn('Black',1,7),],
-    [null,null,null,null,null,null,null,null,],
-    [null,null,null,null,null,null,null,null,],
-    [null,null,null,null,null,null,null,null,],
-    [null,null,null,null,null,null,null,null,],
-    [new Pawn('White',6,0), new Pawn('White',6,1), new Pawn('White',6,2), new Pawn('White',6,3), new Pawn('White',6,4), new Pawn('White',6,5), new Pawn('White',6,6), new Pawn('White',6,7),],
-    [new Rook('White',7,0),new Knight('White',7,1),new Bishop('White',7,2),new Queen('White',7,3),new King('Black',7,4),new Bishop('White',7,5),new Knight('White',7,6),new Rook('White',7,7),],
+app()->bind(GameContextContract::class, Game::class);
+
+// Create an 8x8 board array.
+$board = [];
+
+// Row 0: Black major pieces.
+$board[0] = [
+    app()->make(Rook::class, ['color' => 'Black', 'row' => 0, 'col' => 0]),
+    app()->make(Knight::class, ['color' => 'Black', 'row' => 0, 'col' => 1]),
+    app()->make(Bishop::class, ['color' => 'Black', 'row' => 0, 'col' => 2]),
+    app()->make(Queen::class, ['color' => 'Black', 'row' => 0, 'col' => 3]),
+    app()->make(King::class, ['color' => 'Black', 'row' => 0, 'col' => 4]),
+    app()->make(Bishop::class, ['color' => 'Black', 'row' => 0, 'col' => 5]),
+    app()->make(Knight::class, ['color' => 'Black', 'row' => 0, 'col' => 6]),
+    app()->make(Rook::class, ['color' => 'Black', 'row' => 0, 'col' => 7]),
 ];
+
+// Row 1: Black pawns.
+$blackPawns = [];
+for ($col = 0; $col < 8; $col++) {
+    $blackPawns[] = app()->make(Pawn::class, ['color' => 'Black', 'row' => 1, 'col' => $col]);
+}
+$board[1] = $blackPawns;
+
+// Rows 2 to 5: Empty.
+for ($row = 2; $row <= 5; $row++) {
+    $board[$row] = array_fill(0, 8, null);
+}
+
+// Row 6: White pawns.
+$whitePawns = [];
+for ($col = 0; $col < 8; $col++) {
+    $whitePawns[] = app()->make(Pawn::class, ['color' => 'White', 'row' => 6, 'col' => $col]);
+}
+$board[6] = $whitePawns;
+
+// Row 7: White major pieces.
+$board[7] = [
+    app()->make(Rook::class, ['color' => 'White', 'row' => 7, 'col' => 0]),
+    app()->make(Knight::class, ['color' => 'White', 'row' => 7, 'col' => 1]),
+    app()->make(Bishop::class, ['color' => 'White', 'row' => 7, 'col' => 2]),
+    app()->make(Queen::class, ['color' => 'White', 'row' => 7, 'col' => 3]),
+    app()->make(King::class, ['color' => 'White', 'row' => 7, 'col' => 4]),
+    app()->make(Bishop::class, ['color' => 'White', 'row' => 7, 'col' => 5]),
+    app()->make(Knight::class, ['color' => 'White', 'row' => 7, 'col' => 6]),
+    app()->make(Rook::class, ['color' => 'White', 'row' => 7, 'col' => 7]),
+];
+
+return $board;

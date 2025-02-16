@@ -28,7 +28,8 @@ trait EnPassantValidator
         $directions = [1,-1]; //Right and left square.
 
         foreach($directions as $direction){
-            $square = $board[$pawnPosition->row][$pawnPosition->col + $direction];
+            $square = isset($board[$pawnPosition->row][$pawnPosition->col + $direction]) 
+                ? $board[$pawnPosition->row][$pawnPosition->col + $direction] : null;
             if($square instanceof Pawn && $square->color !== $pawn->color){
                 if($this->testLastMove($moves, $square->color)){
                     return true;
