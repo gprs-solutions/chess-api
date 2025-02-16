@@ -12,6 +12,13 @@ class Game
     public Board $board;
 
     /**
+     * Game moves.
+     * 
+     * @var array $moves
+     */
+    public array $moves;
+
+    /**
      * Current user color.
      * 
      * @var string $currentUser.
@@ -71,12 +78,68 @@ class Game
 
             //Move required is legal, removing piece from old pos and adding to new.
             $board[$newPosition->row][$newPosition->col] = $board[$oldPosition->row][$oldPosition->col];
+            
+            //Updating the position of the piece.
+            $board[$newPosition->row][$newPosition->col]->position->row = $newPosition->row;
+            $board[$newPosition->row][$newPosition->col]->position->col = $newPosition->col;
+
+            //Deleting old piece from previous position.
             $board[$oldPosition->row][$oldPosition->col] = null;
+
             $this->board->setBoard($board);
+            $this->addMove($newPosition);
 
             return true;
         }
 
         return false;
+    }
+
+    /**
+     * Converts move to standard notation and pushes it to the moves array.
+     * 
+     * @param object $newPosition New position.
+     * 
+     * @return bool
+     */
+    private function addMove(object $newPosition): bool
+    {
+        $boardState = $this->board->getBoard();
+
+        $piece = $boardState[$newPosition->row][$newPosition->col] ?? null;
+        
+        if ($piece === null) {
+            return false;
+        }
+
+        // Determine the piece's identifying letter.
+        $pieceLetter = $piece->code ?? '';
+        if (strtoupper($pieceLetter) === 'P') {
+            $pieceLetter = '';
+        }
+
+        // Convert positions to algebraic notation.
+        $to   = $this->convertToAlgebraic($newPosition->row, $newPosition->col);
+
+        // e.g. "c4" or "e4".
+        $moveString = $pieceLetter . $to;
+
+        $this->moves[] = $moveString;
+
+        return true;
+    }
+
+    /**
+     * Converts board coordinates (row, col) to algebraic notation.
+     *
+     * @param int $row
+     * @param int $col
+     * 
+     * @return string
+     */
+    private function convertToAlgebraic(int $row, int $col): string
+    {
+        $file = chr(ord('a') + $row);
+        return $file . $col;
     }
 }

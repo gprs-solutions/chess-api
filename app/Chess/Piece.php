@@ -20,7 +20,7 @@ abstract class Piece implements PieceActionsContract
      * 
      * @var string $code.
      */
-    protected string $code;
+    public string $code;
 
     /**
      * Piece position.
