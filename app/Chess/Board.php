@@ -76,7 +76,7 @@ class Board
             $target = $this->board[$move->row][$move->col] ?? null;
             if ($target !== null) {
                 // There's a piece. If it's the same color, block without adding.
-                if ($target->getColor() === $piece->color) {
+                if ($target->color === $piece->color) {
                     $directionsBlocked[$direction] = true;
                     continue;
                 } else {
@@ -89,7 +89,7 @@ class Board
                 $filteredMoves[] = $move;
             }
         }
-
+        
         return $filteredMoves;
     }
 
