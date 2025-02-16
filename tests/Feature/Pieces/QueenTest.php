@@ -27,11 +27,16 @@ class QueenTest extends TestCase
         $newPos->row = 7;
         $newPos->col = 3;
 
+        //Removing the pawns so the pieces can move.
+        $board = $game->board->getBoard();
+        $board[1] = array_fill(0,8,null);
+        $board[6] = array_fill(0,8,null);
+        $game->board->setBoard($board);
+
         //Making sure the movePiece method is returning info correctly.
         $movedPiece = $game->movePiece($oldPos, $newPos);
-        $this->assertTrue($movedPiece);
-
         $board = $game->board->getBoard();
+        $this->assertTrue($movedPiece);
 
         //Making sure piece was moved correctly.
         $this->assertNull($board[$oldPos->row][$oldPos->col]);

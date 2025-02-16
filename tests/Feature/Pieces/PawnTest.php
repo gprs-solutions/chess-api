@@ -3,11 +3,11 @@
 namespace Tests\Feature\Pieces;
 
 use App\Chess\Game;
-use App\Chess\Pieces\Bishop;
+use App\Chess\Pieces\Pawn;
 use stdClass;
 use Tests\TestCase;
 
-class BishopTest extends TestCase
+class PawnTest extends TestCase
 {
     /**
      * Tests if a legal move is executed as requested.
@@ -20,26 +20,21 @@ class BishopTest extends TestCase
         $game->startGame();
 
         $oldPos = new stdClass();
-        $oldPos->row = 7;
-        $oldPos->col = 2;
+        $oldPos->row = 1;
+        $oldPos->col = 0;
 
         $newPos = new stdClass();
-        $newPos->row = 5;
-        $newPos->col = 4;
-
-        //Removing the pawns so the pieces can move.
-        $board = $game->board->getBoard();
-        $board[1] = array_fill(0,8,null);
-        $board[6] = array_fill(0,8,null);
-        $game->board->setBoard($board);
+        $newPos->row = 3;
+        $newPos->col = 0;
 
         //Making sure the movePiece method is returning info correctly.
         $movedPiece = $game->movePiece($oldPos, $newPos);
-        $board = $game->board->getBoard();
         $this->assertTrue($movedPiece);
+
+        $board = $game->board->getBoard();
 
         //Making sure piece was moved correctly.
         $this->assertNull($board[$oldPos->row][$oldPos->col]);
-        $this->assertInstanceOf(Bishop::class, $board[$newPos->row][$newPos->col]);
+        $this->assertInstanceOf(Pawn::class, $board[$newPos->row][$newPos->col]);
     }
 }
