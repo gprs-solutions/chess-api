@@ -13,7 +13,7 @@ abstract class Piece implements PieceActionsContract
      * 
      * @var string $color.
      */
-    protected string $color;
+    public string $color;
 
     /**
      * Piece code for then class is printed.
@@ -27,7 +27,7 @@ abstract class Piece implements PieceActionsContract
      * 
      * @var object $postion The piece's row and col.
      */
-    protected object $position;
+    public object $position;
 
     /**
      * Prints piece name when class is printed.
