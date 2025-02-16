@@ -74,6 +74,8 @@ class Game
             //Move required is legal, removing piece from old pos and adding to new.
             $board[$newPosition->row][$newPosition->col] = $board[$oldPosition->row][$oldPosition->col];
             $board[$oldPosition->row][$oldPosition->col] = null;
+            $this->board->setBoard($board);
+
             return true;
         }
 

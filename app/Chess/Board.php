@@ -73,7 +73,7 @@ class Board
             }
 
             // Check if there's a piece at the target square.
-            $target = $this->$this->board[$move->row][$move->col] ?? null;
+            $target = $this->board[$move->row][$move->col] ?? null;
             if ($target !== null) {
                 // There's a piece. If it's the same color, block without adding.
                 if ($target->getColor() === $piece->color) {
