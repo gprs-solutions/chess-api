@@ -1,9 +1,12 @@
 <?php
-
 namespace App\Chess;
+
+use App\Chess\Validators\CheckValidator;
 
 class Game
 {   
+    use CheckValidator;
+
     /**
      * Game's board class.
      * 
@@ -23,7 +26,7 @@ class Game
      * 
      * @var string $currentUser.
      */
-    private string $currentUser;
+    public string $currentUser;
 
     /**
      * Constructor method.
@@ -71,20 +74,16 @@ class Game
         
         $legalMoves = $this->board->filterAvailableMoves($board[$oldPosition->row][$oldPosition->col]);
 
+        if($this->isCheck($oldPosition, $newPosition)){
+            return false;
+        }
+
         foreach($legalMoves as $move){
             if(!($move->row === $newPosition->row && $move->col === $newPosition->col)){
                 continue;
             }
 
-            //Move required is legal, removing piece from old pos and adding to new.
-            $board[$newPosition->row][$newPosition->col] = $board[$oldPosition->row][$oldPosition->col];
-            
-            //Updating the position of the piece.
-            $board[$newPosition->row][$newPosition->col]->position->row = $newPosition->row;
-            $board[$newPosition->row][$newPosition->col]->position->col = $newPosition->col;
-
-            //Deleting old piece from previous position.
-            $board[$oldPosition->row][$oldPosition->col] = null;
+            $board = $this->pushToBoard($board, $oldPosition, $newPosition);
 
             $this->board->setBoard($board);
             $this->addMove($newPosition);
@@ -141,5 +140,46 @@ class Game
     {
         $file = chr(ord('a') + $row);
         return $file . $col;
+    }
+
+    /**
+     * Tests if position is a check.
+     * 
+     * @param object $oldPosition Old piece position.
+     * @param object $newPosition New position
+     * 
+     * @return bool
+     */
+    private function isCheck($oldPosition, $newPosition): bool{
+        //Creating a new fictious board with new pos to simulate new position.
+        $board = new Board();
+        $board->setBoard($this->board->getBoard());
+        $simulatedBoard = $this->pushToBoard($board->getBoard(),$oldPosition,$newPosition);
+        $board->setBoard($simulatedBoard);
+
+        return $this->isKingInCheck($board, $this->currentUser);
+    }
+
+    /**
+     * Receives a board and positions, pushing to this board.
+     * 
+     * @param array $board The board with the pieces.
+     * @param object $oldPosition Old piece position.
+     * @param object $newPosition New position.
+     * 
+     * @return array
+     */
+    private function pushToBoard(array $board,object $oldPosition,object $newPosition) :array{
+        //Move required is legal, removing piece from old pos and adding to new.
+        $board[$newPosition->row][$newPosition->col] = $board[$oldPosition->row][$oldPosition->col];
+            
+        //Updating the position of the piece.
+        $board[$newPosition->row][$newPosition->col]->position->row = $newPosition->row;
+        $board[$newPosition->row][$newPosition->col]->position->col = $newPosition->col;
+
+        //Deleting old piece from previous position.
+        $board[$oldPosition->row][$oldPosition->col] = null;
+
+        return $board;
     }
 }

@@ -2,6 +2,8 @@
 
 namespace App\Chess;
 
+use App\Chess\Pieces\King;
+
 class Board
 {
     /**
@@ -91,6 +93,51 @@ class Board
         }
         
         return $filteredMoves;
+    }
+
+    /**
+     * Gets all possible moves for a player;
+     * 
+     * @param string $color Player's color.
+     * 
+     * @return array
+     */
+    public function getAllMovesForColor(string $color): array{
+        $board = $this->board;
+        $moves = [];
+        foreach($board as $row){
+            foreach($row as $slot){
+                if($slot instanceof Piece){
+                    if($slot->color === $color){
+                        $moves = [...$moves, ...$this->filterAvailableMoves($slot)];
+                    }
+                }
+            }
+        }
+
+        return $moves;
+    }
+
+    /**
+     * Gets all possible moves for a player;
+     * 
+     * @param string $color Player's color.
+     * 
+     * @return King|false
+     */
+    public function getKingByColor(string $color) :King|false{
+        $board = $this->board;
+        foreach($board as $row){
+            foreach($row as $slot){
+                if($slot instanceof King){
+                    if($slot->color === $color){
+                        return $slot;
+                    }
+                }
+            }
+        }
+
+        return false;
     }
 
     /**
