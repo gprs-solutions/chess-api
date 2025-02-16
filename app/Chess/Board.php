@@ -10,10 +10,35 @@ class Board
     private array $board;
 
     /**
-     * Constructor method.
+     * Fills board in the starting position.
+     * 
+     * @return void
      */
-    public function __construct(){
-        //Filling board for game start.
-        $this->board = array_fill(0,8,array_fill(0,8,''));
+    public function fillStartingBoard(): void{
+        $this->board = require __DIR__ . '/../Constants/StartingPosition.php';
+    }
+
+    /**
+     * Prints board for testing purposes.
+     * 
+     * @return string
+     */
+    public function printBoard(){
+        $finalBoard = [];
+
+        //Transforming pieces into names.
+        foreach($this->board as $idx => $row){
+            $finalBoard[] = [];
+            foreach($row as $slot){
+                //Forcing magic method __toString to be called via catching output buffering.
+                ob_start();
+                echo $slot !== null ? $slot : null;
+                $output = ob_get_clean();
+
+                $finalBoard[$idx][] = $output;
+            }
+        }
+
+        return print_r($finalBoard);
     }
 }
