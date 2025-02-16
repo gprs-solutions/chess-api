@@ -2,8 +2,6 @@
 
 namespace App\Chess;
 
-use Exception;
-
 class Game
 {   
     /**
