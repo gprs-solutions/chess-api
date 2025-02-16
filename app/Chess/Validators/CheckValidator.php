@@ -11,6 +11,7 @@ trait CheckValidator
      *
      * @param Board $board
      * @param string $color
+     * 
      * @return bool
      */
     public function isKingInCheck(Board $board, string $color): bool
