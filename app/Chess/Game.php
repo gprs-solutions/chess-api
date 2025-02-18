@@ -1,6 +1,7 @@
 <?php
 namespace App\Chess;
 
+use App\Chess\Validators\CheckmateValidator;
 use App\Contracts\GameContextContract;
 use App\Chess\Validators\CheckValidator;
 use App\Contracts\BoardContextContract;
@@ -8,6 +9,7 @@ use App\Contracts\BoardContextContract;
 class Game implements GameContextContract
 {   
     use CheckValidator;
+    use CheckmateValidator;
 
     /**
      * Game's board class.
@@ -91,6 +93,11 @@ class Game implements GameContextContract
             $this->board->setBoard($board);
             $this->addMove($newPosition);
 
+            if($this->isCheckmate($this->board, $this->currentUser)){
+                //TODO: IMPLEMENT CHECKMATE EVENT DISPATCHER.
+                return false;
+            }
+
             return true;
         }
 
@@ -155,8 +162,7 @@ class Game implements GameContextContract
      */
     private function isCheck($oldPosition, $newPosition): bool{
         //Creating a new fictious board with new pos to simulate new position.
-        $board = new Board();
-        $board->setBoard($this->board->getBoard());
+        $board = clone $this->board;
         $simulatedBoard = $this->pushToBoard($board->getBoard(),$oldPosition,$newPosition);
         $board->setBoard($simulatedBoard);
 

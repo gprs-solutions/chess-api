@@ -31,6 +31,15 @@ class Board implements BoardContextContract
     }
 
     /**
+     * Helper to clone the board when it needs to be simulated.
+     * 
+     * @return void
+     */
+    public function __clone(){
+        $this->board = clone $this->board;
+    }
+
+    /**
      * Fills board in the starting position.
      * 
      * @return void
