@@ -31,12 +31,18 @@ class Board implements BoardContextContract
     }
 
     /**
-     * Helper to clone the board when it needs to be simulated.
+     * Helper to clone the board and its pieces when it needs to be simulated.
      * 
      * @return void
      */
     public function __clone(){
-        $this->board = clone $this->board;
+        foreach($this->board as $rowIdx => $row){
+            foreach($row as $colIdx => $slot){
+                if($slot instanceof Piece){
+                    $this->board[$rowIdx][$colIdx] = clone $this->board[$rowIdx][$colIdx];
+                }
+            }
+        }
     }
 
     /**

@@ -5,6 +5,7 @@ use App\Chess\Validators\CheckmateValidator;
 use App\Contracts\GameContextContract;
 use App\Chess\Validators\CheckValidator;
 use App\Contracts\BoardContextContract;
+use App\Events\CheckmateOccurred;
 
 class Game implements GameContextContract
 {   
@@ -92,10 +93,10 @@ class Game implements GameContextContract
 
             $this->board->setBoard($board);
             $this->addMove($newPosition);
+            $this->switchUser();
 
             if($this->isCheckmate($this->board, $this->currentUser)){
-                //TODO: IMPLEMENT CHECKMATE EVENT DISPATCHER.
-                return false;
+                CheckmateOccurred::dispatch($this->currentUser);
             }
 
             return true;

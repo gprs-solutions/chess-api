@@ -18,7 +18,7 @@ trait CheckValidator
     {
         // Find the king's position on the board.
         $king = $board->getKingByColor($color);
-
+        
         if (!$king) {
             return false;
         }

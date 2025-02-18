@@ -28,10 +28,11 @@ trait CheckmateValidator
             for ($col = 0; $col < 8; $col++) {
                 $piece = $state[$row][$col] ?? null;
                 if ($piece !== null && $piece->color === $color) {
-                    $moves = $piece->getMoves($board);
+                    $moves = $board->filterAvailableMoves($piece);
                     foreach ($moves as $move) {
                         $simulatedBoard = clone $board;
-                        $simulatedBoard = $this->simulateMove($simulatedBoard, $piece, $move);
+                        $simulatedBoard = $this->simulateMove($simulatedBoard, clone $piece, $move);
+
                         if (!$this->isKingInCheck($simulatedBoard, $color)) {
                             return false;
                         }

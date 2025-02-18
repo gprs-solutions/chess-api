@@ -44,6 +44,15 @@ abstract class Piece implements PieceActionsContract
     abstract public function getMoves(Board $board): array;
 
     /**
+     * Helper to clone the board and its pieces when it needs to be simulated.
+     * 
+     * @return void
+     */
+    public function __clone(){
+        $this->position = clone $this->position;
+    }
+
+    /**
      * Set position for the piece.
      * 
      * @param int $row Piece's row.
