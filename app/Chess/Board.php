@@ -157,6 +157,29 @@ class Board implements BoardContextContract
     }
 
     /**
+     * Receives a board and positions, pushing to this board.
+     * 
+     * @param array $board The board with the pieces.
+     * @param object $oldPosition Old piece position.
+     * @param object $newPosition New position.
+     * 
+     * @return array
+     */
+    public function pushToBoard(array $board,object $oldPosition,object $newPosition) :array{
+        //Move required is legal, removing piece from old pos and adding to new.
+        $board[$newPosition->row][$newPosition->col] = $board[$oldPosition->row][$oldPosition->col];
+            
+        //Updating the position of the piece.
+        $board[$newPosition->row][$newPosition->col]->position->row = $newPosition->row;
+        $board[$newPosition->row][$newPosition->col]->position->col = $newPosition->col;
+
+        //Deleting old piece from previous position.
+        $board[$oldPosition->row][$oldPosition->col] = null;
+
+        return $board;
+    }
+
+    /**
      * Prints board for testing purposes.
      * 
      * @return string

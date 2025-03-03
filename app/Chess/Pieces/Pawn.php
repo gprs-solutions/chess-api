@@ -30,14 +30,7 @@ class Pawn extends Piece{
         $this->color = $color;
         $this->setPosition($row, $col);
     }
-
-    /**
-     * Prints piece name when class is printed.
-     */
-    public function __toString(){
-        return str_split($this->color)[0] . $this->code;
-    }
-
+    
     /**
      * Get the moves for the Pawn without filtering for check, etc.
      *

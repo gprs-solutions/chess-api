@@ -19,13 +19,6 @@ class Bishop extends Piece{
     }
 
     /**
-     * Prints piece name when class is printed.
-     */
-    public function __toString(){
-        return str_split($this->color)[0] . $this->code;
-    }
-
-    /**
      * Get the moves for the piece without filtering.
      * 
      * @param Board $board the chess board.

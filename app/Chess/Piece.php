@@ -32,7 +32,9 @@ abstract class Piece implements PieceActionsContract
     /**
      * Prints piece name when class is printed.
      */
-    abstract public function __toString();
+    final public function __toString(){
+        return str_split($this->color)[0] . $this->code;
+    }
 
     /**
      * Get the moves for the piece without filtering.
